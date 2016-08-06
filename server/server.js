@@ -8,7 +8,6 @@ var nunjucks = require('nunjucks');         //templating engine
 var storage = require('node-persist');      //local storage
 var formReader = require('multer')();       //form file + data
 var locale = require("locale");             //locale (ex : fr/FR)
-var mongoose = require('mongoose');         //mongoDB
 var sass = require('node-sass');            //Sass
 var coffeebar = require('coffeebar');       //CoffeeScript compiler
 const fs = require('fs');

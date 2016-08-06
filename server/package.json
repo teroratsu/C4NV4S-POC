@@ -1,18 +1,16 @@
 {
   "name": "te.ro",
   "version": "0.0.1",
-  "description": "Tero url shortener",
+  "description": "Te.ro C4NV4S",
   "dependencies": {
     "coffeebar": "^1.0.0",
     "express": "^4.13.4",
-    "googleapis": "^12.0.0",
     "jquery": "^2.2.3",
     "locale": "0.0.21",
     "mongoose": "^4.5.7",
     "multer": "^1.1.0",
     "node-persist": "0.0.11",
     "node-sass": "^3.8.0",
-    "node-sass-middleware": "^0.9.8",
     "nunjucks": "^2.4.2",
     "typescript-compiler": "^1.4.1-2"
   }
