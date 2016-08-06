@@ -52,29 +52,6 @@ userStorage.initSync({
 var supported = ["en", "en_GB", "en_US", "fr", "fr_FR", "fr_BE", "fr_CH", "fr_CA"];
 app.use(locale(supported));
 
-//mongoDB
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/db', function (error) {
-    if (error) {
-        console.log(error);
-    }
-});
-
-// Mongoose Schema definition
-var Schema = mongoose.Schema;
-var UserSchema = new Schema({
-    first_name: String,
-    last_name: String
-});
-
-// Mongoose Model definition
-var User = mongoose.model('users', UserSchema);
-
-User.find(function (err, users) {
-  if (err) return console.error(err);
-  console.log(users);
-})
-
 //sass renderer
 sass.render({
   file: "src/scss/main.scss",
