@@ -15,7 +15,7 @@ const fs = require('fs');
 /********* Globales et config *********/
 
 var client_path = path.resolve(__dirname, '../client'); //adresse du dossier client
-var port = 8080;
+var port = 80;
 
 var defaultStorage = storage.create(); //init local storage
 
