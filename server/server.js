@@ -7,7 +7,6 @@ var path = require('path');                 //path
 var nunjucks = require('nunjucks');         //templating engine
 var storage = require('node-persist');      //local storage
 var formReader = require('multer')();       //form file + data
-var locale = require("locale");             //locale (ex : fr/FR)
 var sass = require('node-sass');            //Sass
 var coffeebar = require('coffeebar');       //CoffeeScript compiler
 const fs = require('fs');
@@ -18,39 +17,20 @@ const fs = require('fs');
 var client_path = path.resolve(__dirname, '../client'); //adresse du dossier client
 var port = 8080;
 
-var subscriberStorage = storage.create(); //init local storage
-var devPostStorage = storage.create(); //init local storage
-var artPostStorage = storage.create(); //init local storage
-var userStorage = storage.create();
+var defaultStorage = storage.create(); //init local storage
 
 // Configuration Nunjucks
 nunjucks.configure(['views',client_path],{
 	autoescape : true,
 	express : app,
-  noCache  : true   //dev only. force recompile
+    noCache  : true   //dev only. force recompile
 });
 
 // Configuration storages
-subscriberStorage.initSync({
-  dir : __dirname + '/data/subscriber',
+defaultStorage.initSync({
+  dir : __dirname + '/data/default',
   interval : 5000 // persist every 5s
 });
-devPostStorage.initSync({
-  dir : __dirname + '/data/blog/dev',
-  interval : 5000 // persist every 5s
-});
-artPostStorage.initSync({
-  dir : __dirname + '/data/blog/art',
-  interval : 5000 // persist every 5s
-});
-userStorage.initSync({
-  dir : __dirname + '/data/tero',
-  interval : 5000 // persist every 5s
-});
-
-//supported languages : locale
-var supported = ["en", "en_GB", "en_US", "fr", "fr_FR", "fr_BE", "fr_CH", "fr_CA"];
-app.use(locale(supported));
 
 //sass renderer
 sass.render({
@@ -86,58 +66,16 @@ app.get('/', ctrlIndex); //presentation page
 
 //Renvoie la page d'accueil
 function ctrlIndex(req, res) {
-  var global;
-  if(supported.indexOf(req.locale,0) > -1){
-    if(req.locale.includes('fr')) global = userStorage.getItem('fr_global');
-    else global = userStorage.getItem('en_global');
-  }
-  else
-  {
-    global = userStorage.getItem('en_global');
-  }
   res.render('index.html',{
-    "global"  : global
+    "global"  : "global"
   });
 }
-
-function ctrlBlog(req, res) {
-      //blog page
-  res.render('blog.njk',{
-    postsDEV : devPostStorage.values(),
-    postsART : artPostStorage.values()
-  }); //which include dev and graph blog, which is nice
-}
-
-function ctrlDevBlog(req, res) {
-  res.render('devblog.njk',{postsDEV : devPostStorage.values()}); //dev blog view
-}
-
-function ctrlArtBlog(req, res) {
-      //graph page
-  res.render('graphblog.njk',{postsART : artPostStorage.values()}); // graph blog view
-}
-
-//Renvoie la page d'un salon
-function ctrlThread(req, res) {
-
-  var tid = req.params.tid; //id du thread
-  if (tid in ThreadList) { //ThreadList = list des post sur /dev et /graph
-    /*res.setHeader('Content-Type', 'text/plain');
-    res.end('Thread ' + tid + " is up, which is nice !\n"
-    + ThreadList[tid].views + " views");*/
-  }
-  else {
-    res.redirect("/"); // ou forward avec une erreur 'thread doesn't exist'
-  }
-}
-
 /**************************************/
 /************** SERVER ****************/
 
 http.listen(port, function(){
   console.log('listening on *:' + port);
 });
-
 
 /**************************************/
 /************* Functions ***************/
