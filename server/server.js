@@ -7,8 +7,6 @@ var path = require('path');                 //path
 var nunjucks = require('nunjucks');         //templating engine
 var storage = require('node-persist');      //local storage
 var formReader = require('multer')();       //form file + data
-var sass = require('node-sass');            //Sass
-var coffeebar = require('coffeebar');       //CoffeeScript compiler
 const fs = require('fs');
 
 /**************************************/
@@ -31,23 +29,6 @@ defaultStorage.initSync({
   dir : __dirname + '/data/default',
   interval : 5000 // persist every 5s
 });
-
-//sass renderer
-sass.render({
-  file: "src/scss/main.scss",
-  includePaths: [ 'lib/', 'mixins/', 'inc/' ],
-  outputStyle: 'compressed',
-  watch: true
-}, function(err, result) {
-    if (err) {
-        console.log(err.message);
-    }
-    else
-        fs.writeFile("../client/public/css/client.min.css", result.css);
-});
-
-//coffeescript compiler
-coffeebar('src/cs/', {output: '../client/public/js/client.min.js', minify: true, watch: true})
 
 /**************************************/
 /************** Routing ***************/

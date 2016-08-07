@@ -3,14 +3,20 @@
   "version": "0.0.1",
   "description": "Te.ro C4NV4S",
   "dependencies": {
-    "coffeebar": "^1.0.0",
     "express": "^4.13.4",
-    "jquery": "^2.2.3",
     "mongoose": "^4.5.7",
     "multer": "^1.1.0",
     "node-persist": "0.0.11",
+    "nunjucks": "^2.4.2"
+  },
+  "scripts": {
+    "dev": "node server.js | npm run compile-scss | npm run compile-cs",
+    "compile-cs": "coffee -o ../client/public/js -cw src/cs ",
+    "compile-scss": "node-sass -o ../client/public/css src/scss -w"
+  },
+  "devDependencies": {
     "node-sass": "^3.8.0",
-    "nunjucks": "^2.4.2",
-    "typescript-compiler": "^1.4.1-2"
+    "coffee-script": "^1.10.0",
+    "jquery": "^2.2.3"
   }
 }
