@@ -6,7 +6,6 @@ var http = require('http').Server(app);     //Http server
 var path = require('path');                 //path 
 var nunjucks = require('nunjucks');         //templating engine
 var storage = require('node-persist');      //local storage
-var formReader = require('multer')();       //form file + data
 const fs = require('fs');
 
 /**************************************/
@@ -24,6 +23,8 @@ nunjucks.configure(['views',client_path],{
     noCache  : true   //dev only. force recompile
 });
 
+app.set('view engine', 'njk');
+
 // Configuration storages
 defaultStorage.initSync({
   dir : __dirname + '/data/default',
@@ -37,7 +38,8 @@ app.use(express.static(client_path + '/public'));
 
 //get
 app.get('/', ctrlIndex); //presentation page
-//@todo : add post route for comment
+app.get('/devroom', ctrlDev);
+app.get('/galery', ctrlArt);
 
 //post
 //app.post('/', formReader.single('lobby_img'), ctrlPostNewImg);
@@ -47,7 +49,19 @@ app.get('/', ctrlIndex); //presentation page
 
 //Renvoie la page d'accueil
 function ctrlIndex(req, res) {
-  res.render('index.html',{
+  res.render('index',{
+    "global"  : "global"
+  });
+}
+
+function ctrlDev(req, res) {
+  res.render('devroom',{
+    "global"  : "global"
+  });
+}
+
+function ctrlArt(req, res) {
+  res.render('galery',{
     "global"  : "global"
   });
 }
